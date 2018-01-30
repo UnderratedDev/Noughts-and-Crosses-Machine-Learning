@@ -36,38 +36,43 @@ function checkWin (letter) {
     i = 0;
     j = 0;
 
-    /* for (; i < size; ++i)
+    for (; i < size; ++i)
         if (board[i][i] != letter)
-            break; */
+            break;
 
-    if (i == size)
+    if (i == size) {
         return true;
+        console.log ("diagonal win");
+    }
 
-    for (i = (size - 1); i >= 0; --i) {
+    for (i = (size - 1); i >= 0; --i)
         if (board[size - i - 1][i] != letter)
             break;
+
+    if (i == -1) {
+        console.log ("diagonal win");
+        return true;
     }
 
-    if (i == -1)
-        return true;
-
-    for (i = (size - 1); i >= 0; --i) {
-        for (; j < size; ++j)
+    for (i = 0; i < size; ++i)
+        for (j = 0; j < size; ++j)
             if (board[i][j] != letter)
                 break;
+
+    if (j == size) {
+        console.log ("row win");
+        return true;
     }
 
-    if (j == size)
-        return true;
-
-    for (i = (size - 1); i >= 0; --i) {
-        for (; j < size; ++j)
+    for (i = 0; i < size; ++i)
+        for (j = 0; j < size; ++j)
             if (board[j][i] != letter)
                 break;
-    }
 
-    if (j == size)
+    if (j == size) {
+        console.log ("column win");
         return true;
+    }
 
     return false;
 }
@@ -80,7 +85,7 @@ function setup() {
         let row = "<tr>\n";
         for (let j = 0; j < board[i].length; ++j) {
             let id = i + '_' + j;
-            row += "<td><button id=" + id + ">" + board[i][j];
+            row += "<td text-align='center'><button id=" + id + ">" + board[i][j];
             row += "</button></td>";
         }
         row += "</tr>";
@@ -92,18 +97,21 @@ function setup() {
                 positionArray = button.id.split('_');
                 x = parseInt(positionArray[0]);
                 y = parseInt(positionArray[1]);
-                // console.log (positionArray);
-                // console.log (board[x][y]);
                 board[x][y] = 'x';
                 button.innerHTML = board[x][y];
+
                 win = checkWin('x');
+                aiWin = checkWin ('o');
 
                 if (win) {
                     alert ("YOU WIN");
                 }
 
+                if (aiWin) {
+                    alert ("AI WINS");
+                }
+
                 value = randomSelect();
-                console.log (value);
                 if (value != -1) {
                     let ai_id = value[0] + "_" + value[1];
                     let aiButton = $("#" + ai_id);
