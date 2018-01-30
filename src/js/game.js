@@ -108,11 +108,13 @@ function setup() {
                 if (win) {
                     alert ("YOU WIN");
                     canWin = false;
+                    return;
                 }
 
                 if (aiWin) {
                     alert ("AI WINS");
                     canWin = false;
+                    return;
                 }
 
                 value = randomSelect();
