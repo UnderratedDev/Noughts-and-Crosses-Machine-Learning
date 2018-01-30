@@ -31,8 +31,49 @@ function randomSelect() {
     return options[selected];
 }
 
+function checkWin (letter) {
+    size = board.length;
+    i = 0;
+    j = 0;
+
+    /* for (; i < size; ++i)
+        if (board[i][i] != letter)
+            break; */
+
+    if (i == size)
+        return true;
+
+    for (i = (size - 1); i >= 0; --i) {
+        if (board[size - i - 1][i] != letter)
+            break;
+    }
+
+    if (i == -1)
+        return true;
+
+    for (i = (size - 1); i >= 0; --i) {
+        for (; j < size; ++j)
+            if (board[i][j] != letter)
+                break;
+    }
+
+    if (j == size)
+        return true;
+
+    for (i = (size - 1); i >= 0; --i) {
+        for (; j < size; ++j)
+            if (board[j][i] != letter)
+                break;
+    }
+
+    if (j == size)
+        return true;
+
+    return false;
+}
+
 function setup() {
-    generateArray(10);
+    generateArray(3);
 
     let table = $("#container");
     for (let i = 0; i < board.length; ++i) {
@@ -55,6 +96,12 @@ function setup() {
                 // console.log (board[x][y]);
                 board[x][y] = 'x';
                 button.innerHTML = board[x][y];
+                win = checkWin('x');
+
+                if (win) {
+                    alert ("YOU WIN");
+                }
+
                 value = randomSelect();
                 console.log (value);
                 if (value != -1) {
