@@ -1,4 +1,6 @@
 var board = new Array(1);
+var canWin = true;
+
 
 function generateArray(size) {
     board = new Array(size);
@@ -40,38 +42,31 @@ function checkWin (letter) {
         if (board[i][i] != letter)
             break;
 
-    if (i == size) {
+    if (i == size)
         return true;
-        console.log ("diagonal win");
-    }
 
     for (i = (size - 1); i >= 0; --i)
         if (board[size - i - 1][i] != letter)
             break;
 
-    if (i == -1) {
-        console.log ("diagonal win");
+    if (i == -1)
         return true;
-    }
 
-    for (i = 0; i < size; ++i)
+    for (i = 0; i < size; ++i) {
         for (j = 0; j < size; ++j)
             if (board[i][j] != letter)
                 break;
-
-    if (j == size) {
-        console.log ("row win");
-        return true;
+        if (j == size)
+            return true;
     }
 
-    for (i = 0; i < size; ++i)
+
+    for (i = 0; i < size; ++i) {
         for (j = 0; j < size; ++j)
             if (board[j][i] != letter)
                 break;
-
-    if (j == size) {
-        console.log ("column win");
-        return true;
+        if (j == size)
+            return true;
     }
 
     return false;
@@ -93,10 +88,17 @@ function setup() {
         for (let j = 0; j < board[i].length; ++j) {
             let id = i + '_' + j;
             $("#" + id).click(function (event) {
+                if (!canWin)
+                   return;
+
                 let button = event.target;
                 positionArray = button.id.split('_');
                 x = parseInt(positionArray[0]);
                 y = parseInt(positionArray[1]);
+
+                if (board[x][y] != ' ')
+                    return;
+
                 board[x][y] = 'x';
                 button.innerHTML = board[x][y];
 
@@ -105,10 +107,12 @@ function setup() {
 
                 if (win) {
                     alert ("YOU WIN");
+                    canWin = false;
                 }
 
                 if (aiWin) {
                     alert ("AI WINS");
+                    canWin = false;
                 }
 
                 value = randomSelect();
